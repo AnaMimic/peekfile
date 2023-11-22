@@ -40,10 +40,10 @@ for file in $all_fa_fasta_files; do
     num_of_sequences=$(grep ">" $file | wc -l | awk '{print $1}')
 
     # the total sequence length in each file, i.e. the total number of amino acids or nucleotides of all sequences in the file. NOTE: gaps "-", spaces, newline characters should not be counted
-    total_sequence_length=$(grep -v ">" $file | tr -d '\n' | wc -m | awk '{print $1}')
+    total_sequence_length=$(grep -v ">" $file | sed 's/-//g' | tr -d '\n' | wc -m | awk '{print $1}')
 
     # Check if the sequence contains nucleotide characters
-    sequences=$(grep -v ">" $file | sed 's/-//g; s/\t//g' | tr -d ' ' | tr -d '\n' | tr '[a-z]' '[A-Z]')
+    sequences=$(grep -v ">" $file | sed 's/-//g' | tr -d ' ' | tr -d '\n' | tr '[a-z]' '[A-Z]')
     content_type="Unknown"
     if [[ "$sequence" =~ [QEILFPXOZJ] ]]; then
         content_type="Amino Acid"
